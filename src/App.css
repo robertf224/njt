@@ -1,0 +1,57 @@
+@import "~@blueprintjs/core/dist/blueprint.css";
+@import "~@blueprintjs/datetime/dist/blueprint-datetime.css";
+
+.App {
+  text-align: center;
+  height: 100%;
+}
+
+.header {
+  padding: 15px;
+  border-bottom: 1px solid #CED9E0;
+  font-weight: 300;
+}
+
+.search-container {
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.search-item {
+  margin: 0px auto;
+  min-width: 280px;
+}
+
+.search-button {
+  margin: 0px auto;
+  width: 160px;
+}
+
+.station-popover .pt-popover-content {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.search-form {
+  flex: 1 1 auto;
+  max-width: 300px;
+}
+
+.schedule-container {
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.schedule {
+  max-width: 90%;
+  margin: 0 auto;
+}
