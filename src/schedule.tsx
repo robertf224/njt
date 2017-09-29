@@ -76,7 +76,7 @@ export class Schedule extends React.Component<IScheduleProps, IScheduleState> {
         return (
             <div className="schedule-container">
                 <div className={classNames(['schedule', 'pt-card'])}>
-                    <table className="pt-table">
+                    <table className="pt-table pt-striped">
                         <thead>
                         <tr>
                             <th>Departure</th>
