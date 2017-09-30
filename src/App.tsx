@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { HashRouter as Router, Route } from 'react-router-dom';
+import { HashRouter as Router, Route, Link } from 'react-router-dom';
 
 import { Schedule } from './schedule';
 import { Search } from './search';
@@ -22,7 +22,7 @@ class App extends React.Component {
       <Router>
         <div className="App">
           <div className="header"> 
-            <img style={{ height: 32 }} src="https://i.imgur.com/qSP16f3.png"/>
+            <Link to="/"><img style={{ height: 32 }} src="https://i.imgur.com/qSP16f3.png"/></Link>
             <span className="pt-navbar-divider divider" />
             <span>NJ Transit Schedules</span>
           </div>
