@@ -21,11 +21,11 @@ class App extends React.Component {
     return (
       <Router>
         <div className="App">
-          <h1 className="header"> 
-            <img style={{ height: 32, paddingTop: 3 }} src="https://i.imgur.com/qSP16f3.png"/>
-            <span className="pt-navbar-divider" />
-            NJ Transit Schedules 
-          </h1>
+          <div className="header"> 
+            <img style={{ height: 32 }} src="https://i.imgur.com/qSP16f3.png"/>
+            <span className="pt-navbar-divider divider" />
+            <span>NJ Transit Schedules</span>
+          </div>
           <Route exact={true} path="/" component={Search} />
           <Route exact={true} path="/schedule" component={Schedule} />
         </div>

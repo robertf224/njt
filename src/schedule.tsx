@@ -1,3 +1,4 @@
+import { Spinner } from '@blueprintjs/core';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -57,11 +58,12 @@ export class Schedule extends React.Component<IScheduleProps, IScheduleState> {
             this.setState({
                 trips: rows.map((row) => {
                     const cells = row.getElementsByTagName('td');
+                    const transfers = cells.length === 4;
                     return {
                         departure: cells[0].innerText,
-                        transfer: cells[1].innerText,
-                        arrival: cells[2].innerText,
-                        time: cells[3].innerText,
+                        transfer: transfers ? cells[1].innerText : undefined,
+                        arrival: cells[transfers ? 2 : 1].innerText,
+                        time: cells[transfers ? 3 : 2].innerText,
                     };
                 }),
             });
@@ -70,17 +72,23 @@ export class Schedule extends React.Component<IScheduleProps, IScheduleState> {
 
     public render() {
         if (this.state.trips === undefined) {
-            return <div> Loading... </div>;
+            return (
+                <div className="schedule-container">
+                    <Spinner />
+                </div>
+            );
         }
+
+        const transfers = this.state.trips.filter((trip) => trip.transfer !== undefined).length > 0;
 
         return (
             <div className="schedule-container">
                 <div className={classNames(['schedule', 'pt-card'])}>
-                    <table className="pt-table pt-striped">
+                    <table className="pt-table pt-striped schedule-table">
                         <thead>
                         <tr>
                             <th>Departure</th>
-                            <th>Transfer</th>
+                            {transfers ? <th>Transfer</th> : null}
                             <th>Arrival</th>
                             <th>Travel time </th>
                         </tr>
@@ -90,7 +98,7 @@ export class Schedule extends React.Component<IScheduleProps, IScheduleState> {
                                 return (
                                     <tr key={trip.departure}>
                                         <td>{trip.departure}</td>
-                                        <td>{trip.transfer}</td>
+                                        {transfers ? <td>{trip.transfer}</td> : null}
                                         <td>{trip.arrival}</td>
                                         <td>{trip.time}</td>
                                     </tr>
