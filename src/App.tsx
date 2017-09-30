@@ -22,7 +22,9 @@ class App extends React.Component {
       <Router>
         <div className="App">
           <div className="header"> 
-            <Link to="/"><img style={{ height: 32 }} src="https://i.imgur.com/qSP16f3.png"/></Link>
+            <Link to="/" style={{ height: 32 }}>
+              <img style={{ height: 32 }} src="https://i.imgur.com/qSP16f3.png"/>
+            </Link>
             <span className="pt-navbar-divider divider" />
             <span>NJ Transit Schedules</span>
           </div>
