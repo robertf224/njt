@@ -2,7 +2,7 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Button, Classes, IconClasses, MenuItem } from '@blueprintjs/core';
-import { DateInput } from '@blueprintjs/datetime';
+import { DatePicker} from '@blueprintjs/datetime';
 import { Select, ISelectItemRendererProps } from '@blueprintjs/labs';
 
 import { IStation } from './App';
@@ -95,11 +95,9 @@ export class Search extends React.Component<{}, ISearchState> {
                         </div>
                         <span style={{marginTop: 10}} />
                         <label className="pt-label"> Date of travel </label>
-                        <DateInput
+                        <DatePicker
                             value={this.state.date || new Date()}
-                            format="MM/DD/YYYY"
                             onChange={this.onDateChange}
-                            inputProps={{ leftIconName: IconClasses.CALENDAR }}
                         />
                         <span style={{marginTop: 20}} />
                         <Button
