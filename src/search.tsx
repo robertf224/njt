@@ -2,7 +2,7 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Button, Classes, IconClasses, MenuItem } from '@blueprintjs/core';
-import { DatePicker} from '@blueprintjs/datetime';
+import { DatePicker } from '@blueprintjs/datetime';
 import { Select, ISelectItemRendererProps } from '@blueprintjs/labs';
 
 import { IStation } from './App';
