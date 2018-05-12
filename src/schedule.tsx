@@ -1,4 +1,4 @@
-import { Spinner } from '@blueprintjs/core';
+import { Button, Spinner, Intent } from '@blueprintjs/core';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -28,15 +28,83 @@ export class Schedule extends React.Component<IScheduleProps, IScheduleState> {
     }
 
     public componentDidMount() {
+        this.issueQuery();
+    }
+
+    public componentDidUpdate(prevProps: IScheduleProps) {
+        if (this.props !== prevProps) {
+            this.issueQuery();
+        }
+    }
+
+    public render() {
+        if (this.state.trips === undefined) {
+            return (
+                <div className="schedule-container">
+                    <Spinner />
+                </div>
+            );
+        }
+
+        const transfers = this.state.trips.filter((trip) => trip.transfer !== undefined).length > 0;
+
+        const { origin, destination, date } = this.getQuery();
+
+        return (
+            <div className="schedule-container">
+                <div className={classNames(['schedule', 'pt-card'])}>
+                    <div style={{ marginBottom: '20px' }}> 
+                        <p> {new Date(date).toDateString()} </p>
+                        <h6> {origin.name} to {destination.name} </h6>
+                        <Button text="Swap" iconName="swap-horizontal" intent={Intent.PRIMARY} onClick={this.onSwap} />
+                    </div>
+                    <table className="pt-table pt-striped schedule-table">
+                        <thead>
+                        <tr>
+                            <th>Departure</th>
+                            {transfers ? <th>Transfer</th> : null}
+                            <th>Arrival</th>
+                            <th>Travel time </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.trips.map((trip) => {
+                                return (
+                                    <tr key={trip.departure}>
+                                        <td>{trip.departure}</td>
+                                        {transfers ? <td>{trip.transfer}</td> : null}
+                                        <td>{trip.arrival}</td>
+                                        <td>{trip.time}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        );
+    }
+
+    private getQuery = () => {
         const params = new URLSearchParams(this.props.location.search);
         const origin = params.get('origin');
         const destination = params.get('destination');
+
+        return {
+            origin: stations.filter((station) => station.key === origin)[0],
+            destination: stations.filter((station) => station.key === destination)[0],
+            date: params.get('date'),
+        };
+    }
+
+    private issueQuery = () => {
+        const { origin, destination, date } = this.getQuery();
         const formData = qs.stringify({
-            selOrigin: origin,
-            selDestination: destination,
-            datepicker: params.get('date'),
-            OriginDescription: stations.filter((station) => station.key === origin)[0].name,
-            DestDescription: stations.filter((station) => station.key === destination)[0].name,
+            selOrigin: origin.key,
+            selDestination: destination.key,
+            datepicker: date,
+            OriginDescription: origin.name,
+            DestDescription: destination.name,
         });
         
         fetch(
@@ -70,44 +138,11 @@ export class Schedule extends React.Component<IScheduleProps, IScheduleState> {
         });
     }
 
-    public render() {
-        if (this.state.trips === undefined) {
-            return (
-                <div className="schedule-container">
-                    <Spinner />
-                </div>
-            );
-        }
-
-        const transfers = this.state.trips.filter((trip) => trip.transfer !== undefined).length > 0;
-
-        return (
-            <div className="schedule-container">
-                <div className={classNames(['schedule', 'pt-card'])}>
-                    <table className="pt-table pt-striped schedule-table">
-                        <thead>
-                        <tr>
-                            <th>Departure</th>
-                            {transfers ? <th>Transfer</th> : null}
-                            <th>Arrival</th>
-                            <th>Travel time </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.trips.map((trip) => {
-                                return (
-                                    <tr key={trip.departure}>
-                                        <td>{trip.departure}</td>
-                                        {transfers ? <td>{trip.transfer}</td> : null}
-                                        <td>{trip.arrival}</td>
-                                        <td>{trip.time}</td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        );
+    private onSwap = () => {
+        this.setState({
+            trips: undefined,
+        });
+        const { origin, destination, date } = this.getQuery();
+        this.props.history.push(`/schedule?origin=${destination.key}&destination=${origin.key}&date=${date}`);
     }
 }
